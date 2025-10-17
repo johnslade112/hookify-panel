@@ -1,44 +1,325 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hookify Panel</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hookify • Panel</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #141414, #1e1e1e);
-      color: white;
-      text-align: center;
-      padding: 50px;
+    :root{
+      --bg:#06070B;
+      --bg2:#0A0C12;
+      --glass:rgba(255,255,255,.06);
+      --glass-2:rgba(255,255,255,.12);
+      --border:rgba(255,255,255,.12);
+      --txt:#EAF2F7;
+      --muted:#9AA4B2;
+      --brand:#00E0B8;
+      --brand2:#5BFF99;
+      --error:#ff4d6d;
+      --shadow:0 10px 40px rgba(0,0,0,.45);
     }
-    h1 {
-      color: #00ffcc;
-      font-size: 2.5em;
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+      color:var(--txt);
+      background: radial-gradient(1200px 1200px at 20% -10%, #0A2B26 0%, transparent 60%),
+                  radial-gradient(1200px 1200px at 120% 0%, #1B1A39 0%, transparent 55%),
+                  linear-gradient(180deg,var(--bg),var(--bg2));
     }
-    p {
-      color: #ccc;
+
+    .wrap{max-width:1100px;margin:54px auto;padding:0 18px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;
     }
-    .btn {
-      background-color: #00ffcc;
-      color: #141414;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.1em;
-      transition: 0.3s;
+    .brand{
+      display:flex;gap:12px;align-items:center;
+      font-weight:800;letter-spacing:.3px
     }
-    .btn:hover {
-      background-color: #00cc99;
+    .logo{
+      width:40px;height:40px;border-radius:12px;
+      background: conic-gradient(from 160deg, var(--brand), var(--brand2), #6AE1FF, var(--brand));
+      box-shadow:0 0 40px rgba(0,224,184,.35);
     }
+    .title{font-size:26px;margin:0}
+    .badge{padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--glass);backdrop-filter:blur(8px);font-weight:700;color:var(--brand)}
+
+    .grid{display:grid;gap:18px;grid-template-columns:1fr}
+    @media(min-width:980px){.grid{grid-template-columns:2fr 1fr}}
+
+    .card{
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{transform:translateY(-2px);border-color:var(--glass-2)}
+
+    h2{margin:0 0 12px;font-size:18px}
+
+    label{display:block;margin:12px 0 6px;color:var(--muted);font-size:13px}
+    input,select,textarea{
+      width:100%; background:rgba(255,255,255,.04); color:var(--txt);
+      border:1px solid var(--border); border-radius:12px; padding:12px; font-size:14px;
+      outline:none; transition:border .2s ease, box-shadow .2s ease;
+    }
+    input:focus,select:focus,textarea:focus{border-color:rgba(0,224,184,.45); box-shadow:0 0 0 4px rgba(0,224,184,.12)}
+    textarea{min-height:90px;resize:vertical}
+
+    .row{display:grid;gap:12px;grid-template-columns:1fr}
+    @media(min-width:700px){.row{grid-template-columns:1fr 1fr}}
+
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      border:0;border-radius:12px;padding:12px 16px;cursor:pointer;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .primary{
+      color:#02130F;
+      background:linear-gradient(90deg,var(--brand),var(--brand2));
+      box-shadow:0 6px 24px rgba(0,224,184,.35);
+    }
+    .ghost{color:var(--txt); background:rgba(255,255,255,.05); border:1px solid var(--border)}
+    .muted{color:var(--muted);font-size:13px}
+    .stack{display:flex;flex-wrap:wrap;gap:10px}
+
+    .out pre{
+      white-space:pre-wrap;background:rgba(7,10,16,.7);
+      border:1px dashed var(--border); padding:12px; border-radius:12px;
+    }
+    .copy{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06); border:1px solid var(--border); cursor:pointer}
+    .pill{padding:6px 10px;border-radius:999px;border:1px dashed var(--border);color:var(--muted);font-size:12px}
+
+    .toast{
+      position:fixed; right:18px; bottom:18px; background:#0D131A; border:1px solid var(--border);
+      padding:12px 14px; border-radius:12px; box-shadow:var(--shadow); opacity:0; transform:translateY(10px);
+      transition: all .25s ease; display:flex; gap:8px; align-items:center;
+    }
+    .toast.show{opacity:1; transform:translateY(0)}
+    .err{color:var(--error);font-weight:700}
+
+    .divider{border:0;border-top:1px solid var(--border);margin:16px 0}
+    footer{margin:26px 0;color:var(--muted);font-size:12px;text-align:center}
+
+    /* shimmer */
+    .shimmer{position:relative;overflow:hidden}
+    .shimmer::after{
+      content:""; position:absolute; inset:0; transform:translateX(-100%);
+      background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,.06), transparent 70%);
+      animation:shine 1.5s infinite;
+    }
+    @keyframes shine{to{transform:translateX(100%)}}
   </style>
 </head>
 <body>
-  <h1>🚀 Hookify Panel</h1>
-  <p>Bem-vindo ao seu painel de geração de conteúdo com IA!</p>
-  <button class="btn" onclick="window.open('https://hookify-api.onrender.com/docs', '_blank')">
-    Acessar API Hookify
-  </button>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <h1 class="title">Hookify <span style="opacity:.6;font-weight:700">Panel</span></h1>
+      </div>
+      <span class="badge"><i class="ri-cloud-line"></i> API Online</span>
+    </header>
+
+    <div class="grid">
+      <!-- ===== GERADOR ===== -->
+      <section class="card">
+        <h2><i class="ri-sparkling-fill" style="color:var(--brand)"></i> Gerar hooks, legendas e hashtags</h2>
+
+        <div class="row">
+          <div>
+            <label>Nicho</label>
+            <input id="niche" placeholder="ganhar dinheiro com IA" />
+          </div>
+          <div>
+            <label>Plataforma</label>
+            <select id="platform">
+              <option value="tiktok" selected>TikTok</option>
+              <option value="reels">Reels</option>
+              <option value="shorts">Shorts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Tom</label>
+            <select id="tone">
+              <option>direto</option><option selected>motivacional</option>
+              <option>educativo</option><option>storytelling</option>
+            </select>
+          </div>
+          <div>
+            <label>Idioma</label>
+            <select id="language"><option value="pt" selected>Português</option></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Produto/Nome</label>
+            <input id="product" placeholder="Hookify" />
+          </div>
+          <div>
+            <label>CTA</label>
+            <input id="cta" placeholder="Link na bio 🔗" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Variações</label>
+            <input id="variants" type="number" value="3" min="1" max="5" />
+          </div>
+          <div>
+            <label># Hashtags</label>
+            <input id="hashtags" type="number" value="5" min="1" max="10" />
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px">
+          <button class="btn primary" id="btnGen"><i class="ri-flashlight-fill"></i> Gerar agora</button>
+          <button class="btn ghost" id="btnClear"><i class="ri-eraser-line"></i> Limpar</button>
+          <span class="muted">Dica: gere 3 variações e faça A/B em 10 min.</span>
+        </div>
+
+        <div id="outGen" class="out" style="margin-top:14px"></div>
+      </section>
+
+      <!-- ===== FERRAMENTAS ===== -->
+      <aside class="card">
+        <h2><i class="ri-tools-line" style="color:#6AE1FF"></i> Ferramentas</h2>
+
+        <label>Encurtar link</label>
+        <input id="longUrl" placeholder="https://seusite.com/oferta" />
+        <div class="stack" style="margin-top:8px">
+          <button class="btn primary" id="btnShort"><i class="ri-link-m"></i> Encurtar</button>
+          <button class="btn ghost" id="btnAnalytics"><i class="ri-bar-chart-2-line"></i> Ver cliques</button>
+        </div>
+        <div id="shortOut" class="out" style="margin-top:10px"></div>
+
+        <hr class="divider" />
+        <div class="muted">
+          Base URL: <code>https://hookify-api.onrender.com</code> •
+          <a href="https://hookify-api.onrender.com/docs" target="_blank">/docs</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Hookify © 2025 • Design neon + glassmorphism</footer>
+  </div>
+
+  <div id="toast" class="toast"><i class="ri-check-line" style="color:var(--brand)"></i><span>Copiado!</span></div>
+
+  <script>
+    // ===== CONFIG =====
+    const API_BASE = "https://hookify-api.onrender.com";
+    const API_KEY  = "hookify-key-123"; // troque por chaves individuais quando vender
+
+    // ===== DOM helpers =====
+    const $ = (id) => document.getElementById(id);
+    const toast = (msg="Copiado!")=>{
+      const t = $("toast"); t.querySelector("span").textContent = msg;
+      t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1500);
+    };
+    const copy = async (txt)=>{ await navigator.clipboard.writeText(txt); toast(); }
+
+    function block(title, arr){
+      return `
+        <div class="card" style="background:rgba(9,12,18,.7)">
+          <h3 style="margin:0 0 10px">${title}</h3>
+          ${arr.map(t=>`
+            <div class="stack" style="align-items:center">
+              <pre style="flex:1">${t}</pre>
+              <button class="copy" onclick='(${copy})(\`${t.replace(/`/g,"\\`")}\`)'><i class="ri-file-copy-line"></i> Copiar</button>
+            </div>
+          `).join("")}
+        </div>`;
+    }
+    const showErr = (node, e)=>{
+      let msg="Algo deu errado"; try{msg = e?.message || e?.detail || JSON.stringify(e)}catch{}
+      node.innerHTML = `<div class="err"><i class="ri-error-warning-line"></i> ${msg}</div>`;
+    };
+
+    // ===== GERAR =====
+    $("btnGen").onclick = async () => {
+      const node = $("outGen");
+      node.innerHTML = `<div class="card shimmer" style="height:72px;border-style:dashed"></div>`;
+      const body = {
+        niche: $("niche").value || "ganhar dinheiro com IA",
+        platform: $("platform").value,
+        tone: $("tone").value,
+        language: $("language").value,
+        product_name: $("product").value || "Hookify",
+        call_to_action: $("cta").value || "Link na bio 🔗",
+        variants: parseInt($("variants").value || "3", 10),
+        hashtags_count: parseInt($("hashtags").value || "5", 10)
+      };
+      try{
+        const r = await fetch(`${API_BASE}/generate`,{
+          method:"POST",
+          headers:{ "X-API-Key": API_KEY, "Content-Type":"application/json" },
+          body: JSON.stringify(body)
+        });
+        const data = await r.json();
+        if(!r.ok) throw data;
+        node.innerHTML = block("Hooks", data.hooks) + block("Legendas", data.captions) + block("Hashtags", data.hashtags);
+      }catch(e){ showErr(node,e); }
+    };
+    $("btnClear").onclick = ()=>{ $("outGen").innerHTML=""; };
+
+    // ===== ENCURTAR =====
+    $("btnShort").onclick = async () => {
+      const node = $("shortOut");
+      const url = $("longUrl").value.trim();
+      if(!url){ node.innerHTML = `<div class="err">Informe uma URL</div>`; return; }
+      node.innerHTML = `<div class="card shimmer" style="height:48px;border-style:dashed"></div>`;
+      try{
+        const r = await fetch(`${API_BASE}/links/shorten`,{
+          method:"POST",
+          headers:{ "X-API-Key": API_KEY, "Content-Type":"application/json" },
+          body: JSON.stringify({ url })
+        });
+        const data = await r.json();
+        if(!r.ok) throw data;
+        node.innerHTML = `
+          <div class="stack">
+            <pre style="flex:1">${data.short_url}</pre>
+            <button class="copy" onclick='(${copy})(\`${data.short_url}\`)'><i class="ri-file-copy-line"></i> Copiar</button>
+            <a class="copy" href="${data.short_url}" target="_blank"><i class="ri-external-link-line"></i> Abrir</a>
+          </div>`;
+      }catch(e){ showErr(node,e); }
+    };
+
+    // ===== ANALYTICS =====
+    $("btnAnalytics").onclick = async () => {
+      const node = $("shortOut");
+      node.innerHTML = `<div class="card shimmer" style="height:90px;border-style:dashed"></div>`;
+      try{
+        const r = await fetch(`${API_BASE}/analytics/links`,{
+          headers:{ "X-API-Key": API_KEY }
+        });
+        const data = await r.json();
+        if(!r.ok) throw data;
+        const rows = (data.links||[]).map(l=>
+          `<div class="stack">
+             <span class="pill">${l.code}</span>
+             <span class="pill">${l.clicks} cliques</span>
+             <a class="copy" href="${API_BASE}/r/${l.code}" target="_blank">${API_BASE}/r/${l.code}</a>
+           </div>`
+        ).join("") || `<div class="muted">Sem dados ainda. Gere um link e clique nele.</div>`;
+        node.innerHTML = `<div class="card" style="background:rgba(9,12,18,.7)"><h3 style="margin:0 0 10px">Links & Cliques</h3>${rows}</div>`;
+      }catch(e){ showErr(node,e); }
+    };
+  </script>
 </body>
 </html>
