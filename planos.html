@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planos | Hookify AI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0e0e10;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: #111;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #00d084;
+    }
+
+    .container {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .container h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .plan {
+      background: #1a1a1d;
+      padding: 40px 25px;
+      border-radius: 16px;
+      border: 1px solid #2b2b2f;
+      transition: all 0.3s ease;
+    }
+
+    .plan:hover {
+      transform: translateY(-5px);
+      border-color: #00d084;
+    }
+
+    .plan h3 {
+      font-size: 1.6rem;
+      color: #00d084;
+    }
+
+    .price {
+      font-size: 2rem;
+      margin: 15px 0;
+    }
+
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 25px 0;
+      line-height: 1.8;
+    }
+
+    .btn {
+      background: #00d084;
+      color: #000;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: #00b874;
+    }
+
+    footer {
+      margin-top: 80px;
+      padding: 20px;
+      background: #111;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hookify AI</h1>
+    <a href="index.html" class="btn">Voltar</a>
+  </header>
+
+  <section class="container">
+    <h2>Escolha seu plano</h2>
+    <p>Transforme ideias em hooks virais com IA em segundos.</p>
+
+    <div class="plans">
+
+      <div class="plan">
+        <h3>Starter</h3>
+        <p class="price">R$19/mês</p>
+        <ul class="features">
+          <li>10 hooks por dia</li>
+          <li>Modelos prontos de alta conversão</li>
+          <li>Suporte básico via e-mail</li>
+        </ul>
+        <a href="https://kiwify.com.br/checkout/SEU_LINK_STARTER" target="_blank" class="btn">Começar</a>
+      </div>
+
+      <div class="plan">
+        <h3>Pro</h3>
+        <p class="price">R$49/mês</p>
+        <ul class="features">
+          <li>Hooks ilimitados</li>
+          <li>Geração por nicho e emoção</li>
+          <li>Suporte prioritário</li>
+        </ul>
+        <a href="https://kiwify.com.br/checkout/SEU_LINK_PRO" target="_blank" class="btn">Assinar agora</a>
+      </div>
+
+      <div class="plan">
+        <h3>Premium</h3>
+        <p class="price">R$79/mês</p>
+        <ul class="features">
+          <li>Tudo do Pro</li>
+          <li>Geração de legendas automáticas</li>
+          <li>Criação de carrosséis com IA</li>
+          <li>Mentoria com especialista</li>
+        </ul>
+        <a href="https://kiwify.com.br/checkout/SEU_LINK_PREMIUM" target="_blank" class="btn">Aderir ao Premium</a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Hookify AI — Todos os direitos reservados.
+  </footer>
+</body>
+</html>
